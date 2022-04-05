@@ -1,7 +1,5 @@
 package com.example.rentalspringboot.repository;
 
-import com.example.rentalspringboot.dto.CarsRequest;
-import com.example.rentalspringboot.dto.ReservationRequest;
 import com.example.rentalspringboot.entity.Reservations;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -16,9 +14,6 @@ public interface ReservationsRepository extends JpaRepository<Reservations, Inte
 
     List<Reservations> getReservationsByStartDateLessThanEqualAndEndDateGreaterThanEqual(Date endD, Date startD);
 
-    List<Reservations> getReservationsByCarNotIn(List<?> carsReserved);
-
     Reservations getReservationsById(int id);
 
-    void save(ReservationRequest reservation);
 }

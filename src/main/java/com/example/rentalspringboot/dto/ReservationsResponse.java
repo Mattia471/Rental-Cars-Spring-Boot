@@ -6,7 +6,7 @@ import java.util.Date;
 
 @Data
 public class ReservationsResponse {
-    private int idReservation;
+    private int id;
     private Date startDate;
     private Date endDate;
     private String status;

@@ -13,7 +13,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/users")
-@CrossOrigin(origins = {"*"})
+@CrossOrigin(origins = {"http://localhost:4200"},
+        methods = {RequestMethod.DELETE,RequestMethod.POST,RequestMethod.PUT,RequestMethod.GET})
 public class UsersController {
 
     @Autowired
@@ -80,7 +81,7 @@ public class UsersController {
     }
 
 
-    @DeleteMapping(value = "delete/{id})")
+    @DeleteMapping(value = "delete/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable("id") int id) {
         usersService.deleteUser(id);
         return ResponseEntity.ok("utente eliminato");

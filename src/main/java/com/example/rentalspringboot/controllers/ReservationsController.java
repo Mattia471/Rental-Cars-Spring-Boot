@@ -1,9 +1,12 @@
 package com.example.rentalspringboot.controllers;
 
-import com.example.rentalspringboot.dto.ReservationRequest;
+import com.example.rentalspringboot.dto.CarsReserved;
+import com.example.rentalspringboot.dto.CarsResponse;
 import com.example.rentalspringboot.dto.ReservationUserResponse;
-import com.example.rentalspringboot.dto.ReservationsCarsAvailable;
 import com.example.rentalspringboot.dto.ReservationsResponse;
+import com.example.rentalspringboot.entity.Cars;
+import com.example.rentalspringboot.entity.Reservations;
+import com.example.rentalspringboot.service.CarsService;
 import com.example.rentalspringboot.service.ReservationsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,11 +20,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/reservations")
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200"},
+        methods = {RequestMethod.DELETE, RequestMethod.POST, RequestMethod.PUT, RequestMethod.GET})
 public class ReservationsController {
 
     @Autowired
     private ReservationsService reservationsService;
+
+    @Autowired
+    private CarsService carsService;
 
     @GetMapping(value = "", produces = "application/json")
     public ResponseEntity<List<ReservationsResponse>> listAll() {
@@ -30,7 +37,7 @@ public class ReservationsController {
     }
 
     @GetMapping(value = "user/{id}", produces = "application/json")
-    public ResponseEntity<List<ReservationUserResponse>> listOccupied(@PathVariable("id") int id) {
+    public ResponseEntity<List<ReservationUserResponse>> listByCustomer(@PathVariable("id") int id) {
         List<ReservationUserResponse> reservations = reservationsService.getByUserId(id);
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
@@ -41,16 +48,18 @@ public class ReservationsController {
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
-    @PostMapping(value = "reserved/{startD}/{endD}", produces = "application/json")
-    public ResponseEntity<List<ReservationsCarsAvailable>> listReserved(@PathVariable("startD") String endD, @PathVariable("endD") String startD) throws ParseException {
+    @GetMapping(value = "reserved", produces = "application/json")
+    public ResponseEntity<List<CarsResponse>> listReserved(@RequestParam("endD") String endD, @RequestParam("startD") String startD) throws ParseException {
 
         //TODO IMPLEMENTARE REQUESTBODY
         SimpleDateFormat pattern = new SimpleDateFormat("yyyy-MM-dd");
         Date startDate = pattern.parse(startD);
         Date endDate = pattern.parse(endD);
 
-        List<ReservationsCarsAvailable> reservations = reservationsService.getCarsAvailable(endDate, startDate);
-        return new ResponseEntity<>(reservations, HttpStatus.OK);
+
+        List<Integer> carsReserved = reservationsService.getCarsReserved(endDate, startDate);
+        List<CarsResponse> carsAvailable = carsService.getCarsAvailable(carsReserved);
+        return new ResponseEntity<>(carsAvailable, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "delete/{id}")
@@ -60,9 +69,9 @@ public class ReservationsController {
     }
 
 
-    //TODO NON FUNZIONANTE
+    //TODO NON FUNZIONANTE SISTEMARE/CREARE DTO IN RICHIESTA
     @PostMapping(value = "add")
-    public ResponseEntity<?> addReservation(@RequestBody ReservationRequest reservation) {
+    public ResponseEntity<?> addReservation(@RequestBody Reservations reservation) {
         reservationsService.saveReservation(reservation);
         return ResponseEntity.ok("prenotazione aggiunta");
     }

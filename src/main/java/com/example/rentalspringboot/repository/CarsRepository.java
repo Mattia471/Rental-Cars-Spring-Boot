@@ -1,13 +1,13 @@
 package com.example.rentalspringboot.repository;
 
-import com.example.rentalspringboot.dto.CarsRequest;
+import com.example.rentalspringboot.dto.CarsReserved;
 import com.example.rentalspringboot.entity.Cars;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface CarsRepository extends JpaRepository<Cars, Integer>
-{
+public interface CarsRepository extends JpaRepository<Cars, Integer> {
     Cars getById(int id);
 
     List<Cars> getAllBy();
@@ -22,6 +22,8 @@ public interface CarsRepository extends JpaRepository<Cars, Integer>
 
     List<Cars> getByYear(String year);
 
-    void save(CarsRequest car);
+
+    List<Cars> getCarsByIdNotIn(List<Integer> carsReservedId);
+
 
 }

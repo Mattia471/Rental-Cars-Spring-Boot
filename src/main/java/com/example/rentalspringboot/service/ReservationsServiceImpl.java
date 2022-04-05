@@ -1,10 +1,8 @@
 package com.example.rentalspringboot.service;
 
-import com.example.rentalspringboot.dto.ReservationRequest;
+import com.example.rentalspringboot.dto.CarsReserved;
 import com.example.rentalspringboot.dto.ReservationUserResponse;
-import com.example.rentalspringboot.dto.ReservationsCarsAvailable;
 import com.example.rentalspringboot.dto.ReservationsResponse;
-import com.example.rentalspringboot.entity.Cars;
 import com.example.rentalspringboot.entity.Reservations;
 import com.example.rentalspringboot.repository.ReservationsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +27,7 @@ public class ReservationsServiceImpl implements ReservationsService {
         List<Reservations> reservations = reservationsRepository.getAllBy();
         for (Reservations res : reservations) {
             ReservationsResponse response = new ReservationsResponse();
-            response.setIdReservation(res.getId());
+            response.setId(res.getId());
             response.setIdUser(res.getUser().getId());
             response.setIdCar(res.getCar().getId());
             response.setStatus(res.getStatus());
@@ -47,7 +45,7 @@ public class ReservationsServiceImpl implements ReservationsService {
         List<Reservations> reservations = reservationsRepository.getByUserId(userId);
         for (Reservations res : reservations) {
             ReservationUserResponse response = new ReservationUserResponse();
-            response.setIdReservation(res.getId());
+            response.setId(res.getId());
             response.setIdUser(res.getUser().getId());
             response.setIdCar(res.getCar().getId());
             response.setStatus(res.getStatus());
@@ -62,7 +60,7 @@ public class ReservationsServiceImpl implements ReservationsService {
     public ReservationsResponse getReservationsById(int id) {
         Reservations reservations = reservationsRepository.getReservationsById(id);
         ReservationsResponse response = new ReservationsResponse();
-        response.setIdReservation(reservations.getId());
+        response.setId(reservations.getId());
         response.setEndDate(reservations.getEndDate());
         response.setStartDate(reservations.getStartDate());
         response.setStatus(reservations.getStatus());
@@ -72,39 +70,20 @@ public class ReservationsServiceImpl implements ReservationsService {
     }
 
     @Override
-    public List<ReservationsCarsAvailable> getCarsAvailable(Date endD, Date startD) {
+    public List<Integer> getCarsReserved(Date endD, Date startD) {
 
-        List<Cars> carsReserved = new ArrayList<>();
-        List<Reservations> reservations = reservationsRepository.getReservationsByStartDateLessThanEqualAndEndDateGreaterThanEqual(startD, endD);
+        List<Integer> carsReserved = new ArrayList<>();
+        List<Reservations> reservations = reservationsRepository.getReservationsByStartDateLessThanEqualAndEndDateGreaterThanEqual(endD, startD);
 
         //estrapola auto occupate
-            for (Reservations resReserved : reservations) {
-                carsReserved.add(resReserved.getCar());
-            }
-
-            //TODO CONTROLLO SE RISULTATO DI RESERVATIONS è NULLO IL NOT IN NON OPERA SU NESSUN ID
-
-        List<ReservationsCarsAvailable> carsAvailables = new ArrayList<>();
-
-        //importa nel parametro la lista di auto
-        List<Reservations> listAvailableCars = reservationsRepository.getReservationsByCarNotIn(carsReserved);
-
-        //estrapola le prenotazioni fuori dal range
-        for (Reservations resAvailable : listAvailableCars) {
-            ReservationsCarsAvailable response1 = new ReservationsCarsAvailable();
-            response1.setIdCar(resAvailable.getCar().getId());
-            response1.setManufacturer(resAvailable.getCar().getManufacturer());
-            response1.setLicensePlate(resAvailable.getCar().getLicensePlate());
-            response1.setModel(resAvailable.getCar().getModel());
-            response1.setType(resAvailable.getCar().getType());
-            response1.setYear(resAvailable.getCar().getYear());
-            carsAvailables.add(response1);
+        for (Reservations resReserved : reservations) {
+            carsReserved.add(resReserved.getCar().getId());
         }
-        return carsAvailables;
+        return carsReserved;
     }
 
     @Override
-    public void saveReservation(ReservationRequest reservation) {
+    public void saveReservation(Reservations reservation) {
         reservationsRepository.save(reservation);
     }
 

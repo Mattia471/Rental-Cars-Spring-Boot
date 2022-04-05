@@ -22,5 +22,4 @@ public interface UsersRepository extends JpaRepository<Users, Integer>
 
     List<Users> getBySurname(String surname);
 
-
 }

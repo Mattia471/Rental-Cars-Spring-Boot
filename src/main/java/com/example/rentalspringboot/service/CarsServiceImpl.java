@@ -1,6 +1,6 @@
 package com.example.rentalspringboot.service;
 
-import com.example.rentalspringboot.dto.CarsRequest;
+import com.example.rentalspringboot.dto.CarsReserved;
 import com.example.rentalspringboot.dto.CarsResponse;
 import com.example.rentalspringboot.entity.Cars;
 import com.example.rentalspringboot.repository.CarsRepository;
@@ -22,28 +22,27 @@ public class CarsServiceImpl implements CarsService {
     @Override
     public CarsResponse getById(int id) {
         Cars cars = carsRepository.getById(id);
-            CarsResponse response = new CarsResponse();
-            response.setId(cars.getId());
-            response.setManufacturer(cars.getManufacturer());
-            response.setLicensePlate(cars.getLicensePlate());
-            response.setModel(cars.getModel());
-            response.setType(cars.getType());
-            response.setYear(cars.getYear());
+        CarsResponse response = new CarsResponse();
+        response.setId(cars.getId());
+        response.setManufacturer(cars.getManufacturer());
+        response.setLicensePlate(cars.getLicensePlate());
+        response.setModel(cars.getModel());
+        response.setType(cars.getType());
+        response.setYear(cars.getYear());
         return response;
     }
-
 
 
     @Override
     public CarsResponse getBylicensePlate(String licensePlate) {
         Cars cars = carsRepository.getBylicensePlate(licensePlate);
-            CarsResponse response = new CarsResponse();
-            response.setId(cars.getId());
-            response.setManufacturer(cars.getManufacturer());
-            response.setLicensePlate(cars.getLicensePlate());
-            response.setModel(cars.getModel());
-            response.setType(cars.getType());
-            response.setYear(cars.getYear());
+        CarsResponse response = new CarsResponse();
+        response.setId(cars.getId());
+        response.setManufacturer(cars.getManufacturer());
+        response.setLicensePlate(cars.getLicensePlate());
+        response.setModel(cars.getModel());
+        response.setType(cars.getType());
+        response.setYear(cars.getYear());
         return response;
     }
 
@@ -134,7 +133,26 @@ public class CarsServiceImpl implements CarsService {
     }
 
     @Override
-    public void saveCar(CarsRequest car) {
+    public List<CarsResponse> getCarsAvailable(List<Integer> carsReserved) {
+        List<Cars> carsAvailable = carsRepository.getCarsByIdNotIn(carsReserved);
+        List<CarsResponse> cars = new ArrayList<>();
+        //estrapola auto occupate
+        for (Cars resAvailable : carsAvailable) {
+            CarsResponse available = new CarsResponse();
+            available.setId(resAvailable.getId());
+            available.setType(resAvailable.getType());
+            available.setYear(resAvailable.getYear());
+            available.setModel(resAvailable.getModel());
+            available.setLicensePlate(resAvailable.getLicensePlate());
+            available.setManufacturer(resAvailable.getManufacturer());
+            cars.add(available);
+        }
+
+        return cars;
+    }
+
+    @Override
+    public void saveCar(Cars car) {
         carsRepository.save(car);
     }
 
