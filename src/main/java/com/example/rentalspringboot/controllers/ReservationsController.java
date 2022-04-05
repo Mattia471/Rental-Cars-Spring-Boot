@@ -1,5 +1,6 @@
 package com.example.rentalspringboot.controllers;
 
+import com.example.rentalspringboot.dto.ReservationRequest;
 import com.example.rentalspringboot.dto.ReservationUserResponse;
 import com.example.rentalspringboot.dto.ReservationsCarsAvailable;
 import com.example.rentalspringboot.dto.ReservationsResponse;
@@ -52,4 +53,17 @@ public class ReservationsController {
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
+    @DeleteMapping(value = "delete/{id}")
+    public ResponseEntity<?> deleteReservation(@PathVariable("id") int id) {
+        reservationsService.deleteReservation(id);
+        return ResponseEntity.ok("prenotazione eliminata");
+    }
+
+
+    //TODO NON FUNZIONANTE
+    @PostMapping(value = "add")
+    public ResponseEntity<?> addReservation(@RequestBody ReservationRequest reservation) {
+        reservationsService.saveReservation(reservation);
+        return ResponseEntity.ok("prenotazione aggiunta");
+    }
 }

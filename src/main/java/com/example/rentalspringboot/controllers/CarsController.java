@@ -1,5 +1,6 @@
 package com.example.rentalspringboot.controllers;
 
+import com.example.rentalspringboot.dto.CarsRequest;
 import com.example.rentalspringboot.dto.CarsResponse;
 import com.example.rentalspringboot.entity.Cars;
 import com.example.rentalspringboot.service.CarsService;
@@ -34,10 +35,10 @@ public class CarsController
         return new ResponseEntity<>(car, HttpStatus.OK);
     }
 
-    @GetMapping(value = "licenseplate/{licenseplate}", produces = "application/json")
-    public ResponseEntity<CarsResponse> carByLicenseplate(@PathVariable("licenseplate") String licenseplate)
+    @GetMapping(value = "licensePlate/{licensePlate}", produces = "application/json")
+    public ResponseEntity<CarsResponse> carBylicensePlate(@PathVariable("licensePlate") String licensePlate)
     {
-        CarsResponse car = carsService.getByLicensePlate(licenseplate);
+        CarsResponse car = carsService.getBylicensePlate(licensePlate);
         return new ResponseEntity<>(car, HttpStatus.OK);
     }
 
@@ -58,7 +59,7 @@ public class CarsController
     @GetMapping(value = "type/{type}", produces = "application/json")
     public ResponseEntity<List<CarsResponse>> listByType(@PathVariable("type") String type)
     {
-        List<CarsResponse> car = carsService.getByManufacturer(type);
+        List<CarsResponse> car = carsService.getByType(type);
         return new ResponseEntity<>(car, HttpStatus.OK);
     }
 
@@ -70,10 +71,17 @@ public class CarsController
     }
 
     @PostMapping(value = "add")
-    public ResponseEntity<?> addCar(@RequestBody Cars car)
+    public ResponseEntity<?> addCar(@RequestBody CarsRequest car)
     {
         carsService.saveCar(car);
         return ResponseEntity.ok("auto aggiunta");
+    }
+
+    @DeleteMapping(value = "delete/{id}")
+    public ResponseEntity<?> deleteCar(@PathVariable("id") int id)
+    {
+        carsService.deleteCar(id);
+        return ResponseEntity.ok("auto eliminata");
     }
 
 }

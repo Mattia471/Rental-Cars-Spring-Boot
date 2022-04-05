@@ -1,5 +1,6 @@
 package com.example.rentalspringboot.service;
 
+import com.example.rentalspringboot.dto.CarsRequest;
 import com.example.rentalspringboot.dto.CarsResponse;
 import com.example.rentalspringboot.entity.Cars;
 import com.example.rentalspringboot.repository.CarsRepository;
@@ -34,8 +35,8 @@ public class CarsServiceImpl implements CarsService {
 
 
     @Override
-    public CarsResponse getByLicensePlate(String licenseplate) {
-        Cars cars = carsRepository.getByLicensePlate(licenseplate);
+    public CarsResponse getBylicensePlate(String licensePlate) {
+        Cars cars = carsRepository.getBylicensePlate(licensePlate);
             CarsResponse response = new CarsResponse();
             response.setId(cars.getId());
             response.setManufacturer(cars.getManufacturer());
@@ -133,12 +134,12 @@ public class CarsServiceImpl implements CarsService {
     }
 
     @Override
-    public void saveCar(Cars car) {
+    public void saveCar(CarsRequest car) {
         carsRepository.save(car);
     }
 
     @Override
-    public void deleteCar(Cars car) {
-        carsRepository.delete(car);
+    public void deleteCar(int id) {
+        carsRepository.deleteById(id);
     }
 }

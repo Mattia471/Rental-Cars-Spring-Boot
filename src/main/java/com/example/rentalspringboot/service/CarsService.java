@@ -1,7 +1,7 @@
 package com.example.rentalspringboot.service;
 
+import com.example.rentalspringboot.dto.CarsRequest;
 import com.example.rentalspringboot.dto.CarsResponse;
-import com.example.rentalspringboot.entity.Cars;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ public interface CarsService
 {
     CarsResponse getById(int id);
 
-    CarsResponse getByLicensePlate(String licenseplate);
+    CarsResponse getBylicensePlate(String licensePlate);
 
     List<CarsResponse> getAllBy();
 
@@ -21,7 +21,7 @@ public interface CarsService
 
     List<CarsResponse> getByYear(String year);
 
-    void saveCar(Cars car);
+    void saveCar(CarsRequest car);
 
-    void deleteCar(Cars car);
+    void deleteCar(int id);
 }

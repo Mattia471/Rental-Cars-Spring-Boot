@@ -48,4 +48,5 @@ public class Reservations implements Serializable {
 
     @Column
     private String status;
+
 }

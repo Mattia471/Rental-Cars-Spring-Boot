@@ -1,5 +1,6 @@
 package com.example.rentalspringboot.service;
 
+import com.example.rentalspringboot.dto.ReservationRequest;
 import com.example.rentalspringboot.dto.ReservationUserResponse;
 import com.example.rentalspringboot.dto.ReservationsCarsAvailable;
 import com.example.rentalspringboot.dto.ReservationsResponse;
@@ -100,6 +101,16 @@ public class ReservationsServiceImpl implements ReservationsService {
             carsAvailables.add(response1);
         }
         return carsAvailables;
+    }
+
+    @Override
+    public void saveReservation(ReservationRequest reservation) {
+        reservationsRepository.save(reservation);
+    }
+
+    @Override
+    public void deleteReservation(int id) {
+        reservationsRepository.deleteById(id);
     }
 
 

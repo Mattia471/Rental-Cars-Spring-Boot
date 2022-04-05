@@ -1,5 +1,6 @@
 package com.example.rentalspringboot.repository;
 
+import com.example.rentalspringboot.dto.CarsRequest;
 import com.example.rentalspringboot.entity.Cars;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -11,7 +12,7 @@ public interface CarsRepository extends JpaRepository<Cars, Integer>
 
     List<Cars> getAllBy();
 
-    Cars getByLicensePlate(String licenseplate);
+    Cars getBylicensePlate(String licensePlate);
 
     List<Cars> getByManufacturer(String manufacturer);
 
@@ -20,5 +21,7 @@ public interface CarsRepository extends JpaRepository<Cars, Integer>
     List<Cars> getByType(String type);
 
     List<Cars> getByYear(String year);
+
+    void save(CarsRequest car);
 
 }
