@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public interface UsersRepository extends JpaRepository<Users, Integer>
 {
@@ -21,5 +22,7 @@ public interface UsersRepository extends JpaRepository<Users, Integer>
     Users getByEmail(String email);
 
     List<Users> getBySurname(String surname);
+
+    Optional<Users> findByEmail(String email);
 
 }

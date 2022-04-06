@@ -4,7 +4,6 @@ import com.example.rentalspringboot.dto.UsersResponse;
 import com.example.rentalspringboot.entity.Users;
 import com.example.rentalspringboot.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -19,8 +18,6 @@ public class UsersServiceImpl implements UsersService {
     @Autowired
     UsersRepository usersRepository;
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
 
 
     @Override
