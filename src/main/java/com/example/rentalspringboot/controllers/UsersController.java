@@ -60,9 +60,9 @@ public class UsersController {
 
     //estrapola la lista di utenti con ruolo inserito in input
     @GetMapping(value = "email/{email}", produces = "application/json")
-    public ResponseEntity<List<UsersResponse>> listByEmail(@PathVariable("email") String email) {
+    public ResponseEntity<UsersResponse> listByEmail(@PathVariable("email") String email) {
 
-        List<UsersResponse> user = usersService.getByEmail(email);
+        UsersResponse user = usersService.getByEmail(email);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 

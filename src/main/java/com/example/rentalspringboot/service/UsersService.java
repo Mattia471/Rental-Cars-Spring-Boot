@@ -18,7 +18,7 @@ public interface UsersService
 
     List<UsersResponse> getByBirthdate(Date birthdate);
 
-    List<UsersResponse> getByEmail(String email);
+    UsersResponse getByEmail(String email);
 
     List<UsersResponse> getBySurname(String surname);
 

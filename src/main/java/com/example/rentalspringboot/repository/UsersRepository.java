@@ -18,7 +18,7 @@ public interface UsersRepository extends JpaRepository<Users, Integer>
 
     List<Users> getByBirthdate(Date birthdate);
 
-    List<Users> getByEmail(String email);
+    Users getByEmail(String email);
 
     List<Users> getBySurname(String surname);
 

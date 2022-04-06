@@ -4,6 +4,7 @@ import com.example.rentalspringboot.dto.UsersResponse;
 import com.example.rentalspringboot.entity.Users;
 import com.example.rentalspringboot.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -18,6 +19,10 @@ public class UsersServiceImpl implements UsersService {
     @Autowired
     UsersRepository usersRepository;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+
     @Override
     public UsersResponse getById(int id) {
         Users users = usersRepository.getById(id);
@@ -26,6 +31,7 @@ public class UsersServiceImpl implements UsersService {
         response.setSurname(users.getSurname());
         response.setName(users.getName());
         response.setEmail(users.getEmail());
+        response.setPassword(users.getPassword());
         response.setBirthdate(users.getBirthdate());
         response.setRole(users.getRole());
         return response;
@@ -41,6 +47,7 @@ public class UsersServiceImpl implements UsersService {
             response.setSurname(res.getSurname());
             response.setName(res.getName());
             response.setEmail(res.getEmail());
+            response.setPassword(res.getPassword());
             response.setBirthdate(res.getBirthdate());
             response.setRole(res.getRole());
             usersResponses.add(response);
@@ -58,6 +65,7 @@ public class UsersServiceImpl implements UsersService {
             response.setSurname(res.getSurname());
             response.setName(res.getName());
             response.setEmail(res.getEmail());
+            response.setPassword(res.getPassword());
             response.setBirthdate(res.getBirthdate());
             response.setRole(res.getRole());
             usersResponses.add(response);
@@ -75,6 +83,7 @@ public class UsersServiceImpl implements UsersService {
             response.setSurname(res.getSurname());
             response.setName(res.getName());
             response.setEmail(res.getEmail());
+            response.setPassword(res.getPassword());
             response.setBirthdate(res.getBirthdate());
             response.setRole(res.getRole());
             usersResponses.add(response);
@@ -92,6 +101,7 @@ public class UsersServiceImpl implements UsersService {
             response.setSurname(res.getSurname());
             response.setName(res.getName());
             response.setEmail(res.getEmail());
+            response.setPassword(res.getPassword());
             response.setBirthdate(res.getBirthdate());
             response.setRole(res.getRole());
             usersResponses.add(response);
@@ -100,20 +110,17 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public List<UsersResponse> getByEmail(String email) {
-        List<UsersResponse> usersResponses = new ArrayList<>();
-        List<Users> users = usersRepository.getByEmail(email);
-        for (Users res : users) {
-            UsersResponse response = new UsersResponse();
-            response.setId(res.getId());
-            response.setSurname(res.getSurname());
-            response.setName(res.getName());
-            response.setEmail(res.getEmail());
-            response.setBirthdate(res.getBirthdate());
-            response.setRole(res.getRole());
-            usersResponses.add(response);
-        }
-        return usersResponses;
+    public UsersResponse getByEmail(String email) {
+        Users users = usersRepository.getByEmail(email);
+        UsersResponse response = new UsersResponse();
+        response.setId(users.getId());
+        response.setSurname(users.getSurname());
+        response.setName(users.getName());
+        response.setPassword(users.getPassword());
+        response.setEmail(users.getEmail());
+        response.setBirthdate(users.getBirthdate());
+        response.setRole(users.getRole());
+        return response;
     }
 
     @Override
@@ -126,6 +133,7 @@ public class UsersServiceImpl implements UsersService {
             response.setSurname(res.getSurname());
             response.setName(res.getName());
             response.setEmail(res.getEmail());
+            response.setPassword(res.getPassword());
             response.setBirthdate(res.getBirthdate());
             response.setRole(res.getRole());
             usersResponses.add(response);
