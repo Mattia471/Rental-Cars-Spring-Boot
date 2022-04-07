@@ -2,7 +2,9 @@ package com.example.rentalspringboot.service;
 
 import com.example.rentalspringboot.dto.CarsReserved;
 import com.example.rentalspringboot.dto.CarsResponse;
+import com.example.rentalspringboot.dto.UsersResponse;
 import com.example.rentalspringboot.entity.Cars;
+import com.example.rentalspringboot.entity.Users;
 import com.example.rentalspringboot.repository.CarsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,15 +22,21 @@ public class CarsServiceImpl implements CarsService {
 
 
     @Override
-    public CarsResponse getById(int id) {
-        Cars cars = carsRepository.getById(id);
+    public Cars getById(int id) {
+        Cars car = carsRepository.getById(id);
+        return car;
+    }
+
+    @Override
+    public CarsResponse getCarById(int id) {
+        Cars car = carsRepository.getCarsById(id);
         CarsResponse response = new CarsResponse();
-        response.setId(cars.getId());
-        response.setManufacturer(cars.getManufacturer());
-        response.setLicensePlate(cars.getLicensePlate());
-        response.setModel(cars.getModel());
-        response.setType(cars.getType());
-        response.setYear(cars.getYear());
+        response.setId(car.getId());
+        response.setManufacturer(car.getManufacturer());
+        response.setModel(car.getModel());
+        response.setYear(car.getYear());
+        response.setType(car.getType());
+        response.setLicensePlate(car.getLicensePlate());
         return response;
     }
 

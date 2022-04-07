@@ -10,6 +10,8 @@ import java.util.List;
 public interface CarsRepository extends JpaRepository<Cars, Integer> {
     Cars getById(int id);
 
+    Cars getCarsById(int id);
+
     List<Cars> getAllBy();
 
     Cars getBylicensePlate(String licensePlate);
@@ -21,7 +23,6 @@ public interface CarsRepository extends JpaRepository<Cars, Integer> {
     List<Cars> getByType(String type);
 
     List<Cars> getByYear(String year);
-
 
     List<Cars> getCarsByIdNotIn(List<Integer> carsReservedId);
 

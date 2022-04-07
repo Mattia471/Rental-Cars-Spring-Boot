@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface CarsService
 {
-    CarsResponse getById(int id);
+    Cars getById(int id);
+
+    CarsResponse getCarById(int id);
 
     CarsResponse getBylicensePlate(String licensePlate);
 

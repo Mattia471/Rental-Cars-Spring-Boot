@@ -27,8 +27,14 @@ public class CarsController {
 
 
     @GetMapping(value = "id/{id}", produces = "application/json")
-    public ResponseEntity<CarsResponse> carById(@PathVariable("id") int id) {
-        CarsResponse car = carsService.getById(id);
+    public ResponseEntity<Cars> carById(@PathVariable("id") int id) {
+        Cars car = carsService.getById(id);
+        return new ResponseEntity<>(car, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "car/{id}", produces = "application/json")
+    public ResponseEntity<CarsResponse> getCarById(@PathVariable("id") int id) {
+        CarsResponse car = carsService.getCarById(id);
         return new ResponseEntity<>(car, HttpStatus.OK);
     }
 

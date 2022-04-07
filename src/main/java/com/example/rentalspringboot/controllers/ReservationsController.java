@@ -1,6 +1,9 @@
 package com.example.rentalspringboot.controllers;
 
-import com.example.rentalspringboot.dto.*;
+import com.example.rentalspringboot.dto.CarsResponse;
+import com.example.rentalspringboot.dto.ReservationUserResponse;
+import com.example.rentalspringboot.dto.ReservationsRequest;
+import com.example.rentalspringboot.dto.ReservationsResponse;
 import com.example.rentalspringboot.entity.Cars;
 import com.example.rentalspringboot.entity.Reservations;
 import com.example.rentalspringboot.entity.Users;
@@ -24,13 +27,13 @@ import java.util.List;
 public class ReservationsController {
 
     @Autowired
-     ReservationsService reservationsService;
+    ReservationsService reservationsService;
 
     @Autowired
-     CarsService carsService;
+    CarsService carsService;
 
     @Autowired
-     UsersService usersService;
+    UsersService usersService;
 
 
     @GetMapping(value = "", produces = "application/json")
@@ -59,7 +62,6 @@ public class ReservationsController {
         Date startDate = pattern.parse(startD);
         Date endDate = pattern.parse(endD);
 
-
         List<Integer> carsReserved = reservationsService.getCarsReserved(endDate, startDate);
         List<CarsResponse> carsAvailable = carsService.getCarsAvailable(carsReserved);
         return new ResponseEntity<>(carsAvailable, HttpStatus.OK);
@@ -72,30 +74,52 @@ public class ReservationsController {
     }
 
 
-    //TODO NON FUNZIONANTE SISTEMARE/CREARE DTO IN RICHIESTA
     @PostMapping(value = "add")
     public ResponseEntity<?> addReservation(@RequestBody ReservationsRequest reservation) {
 
-        Users user = usersService.getById(reservation.getUserId());
+        Users user = usersService.getUsersById(reservation.getUserId());
         Cars car = carsService.getById(reservation.getCarId());
         Reservations newRes = new Reservations();
-        if(user != null && car !=null) {
-            newRes.setStartDate(reservation.getStartDate());
-            newRes.setEndDate(reservation.getEndDate());
-            newRes.setStatus(reservation.getStatus());
-            newRes.setCar(car);
-            newRes.setUser(user);
+        if (user != null && car != null) {
+            if(reservation.getStartDate().before(reservation.getEndDate()) && reservation.getEndDate().after(reservation.getStartDate())) {
+                newRes.setStartDate(reservation.getStartDate());
+                newRes.setEndDate(reservation.getEndDate());
+                newRes.setStatus(reservation.getStatus());
+                newRes.setCar(car);
+                newRes.setUser(user);
+            }
         }
         reservationsService.saveReservation(newRes);
         return ResponseEntity.ok("prenotazione aggiunta");
     }
 
-    @PutMapping(value = "accept")
-    public ResponseEntity<?> acceptReservation(@RequestBody ReservationsRequest reservation){
-        Users user = usersService.getById(reservation.getUserId());
+    @PutMapping(value = "edit")
+    public ResponseEntity<?> editReservation(@RequestBody ReservationsRequest reservation) {
+
+        Users user = usersService.getUsersById(reservation.getUserId());
         Cars car = carsService.getById(reservation.getCarId());
         Reservations newRes = new Reservations();
-        if(user != null && car !=null) {
+        if (user != null && car != null) {
+            if(reservation.getStartDate().before(reservation.getEndDate()) && reservation.getEndDate().after(reservation.getStartDate())) {
+                newRes.setId(reservation.getId());
+                newRes.setStartDate(reservation.getStartDate());
+                newRes.setEndDate(reservation.getEndDate());
+                newRes.setStatus(reservation.getStatus());
+                newRes.setCar(car);
+                newRes.setUser(user);
+            }
+        }
+        reservationsService.saveReservation(newRes);
+        return ResponseEntity.ok("prenotazione modificata");
+    }
+
+    @PutMapping(value = "accept")
+    public ResponseEntity<?> acceptReservation(@RequestBody ReservationsRequest reservation) {
+
+        Users user = usersService.getUsersById(reservation.getUserId());
+        Cars car = carsService.getById(reservation.getCarId());
+        Reservations newRes = new Reservations();
+        if (user != null && car != null) {
             newRes.setId(reservation.getId());
             newRes.setStartDate(reservation.getStartDate());
             newRes.setEndDate(reservation.getEndDate());
@@ -108,11 +132,11 @@ public class ReservationsController {
     }
 
     @PutMapping(value = "decline")
-    public ResponseEntity<?> declineReservations(@RequestBody ReservationsRequest reservation){
-        Users user = usersService.getById(reservation.getUserId());
+    public ResponseEntity<?> declineReservations(@RequestBody ReservationsRequest reservation) {
+        Users user = usersService.getUsersById(reservation.getUserId());
         Cars car = carsService.getById(reservation.getCarId());
         Reservations newRes = new Reservations();
-        if(user != null && car !=null) {
+        if (user != null && car != null) {
             newRes.setId(reservation.getId());
             newRes.setStartDate(reservation.getStartDate());
             newRes.setEndDate(reservation.getEndDate());

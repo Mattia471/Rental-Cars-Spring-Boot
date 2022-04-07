@@ -21,14 +21,20 @@ public class UsersServiceImpl implements UsersService {
 
 
     @Override
+    public Users getUsersById(int id) {
+        Users users = usersRepository.getUsersById(id);
+        return users;
+    }
+
+    @Override
     public UsersResponse getById(int id) {
         Users users = usersRepository.getById(id);
         UsersResponse response = new UsersResponse();
         response.setId(users.getId());
         response.setSurname(users.getSurname());
         response.setName(users.getName());
-        response.setEmail(users.getEmail());
         response.setPassword(users.getPassword());
+        response.setEmail(users.getEmail());
         response.setBirthdate(users.getBirthdate());
         response.setRole(users.getRole());
         return response;

@@ -9,6 +9,8 @@ import java.util.Optional;
 
 public interface UsersRepository extends JpaRepository<Users, Integer>
 {
+    Users getUsersById(int id);
+
     Users getById(int id);
 
     List<Users> getAllBy();

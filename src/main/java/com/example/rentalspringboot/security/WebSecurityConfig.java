@@ -44,16 +44,35 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    private static final String[] ADMIN_PERMIT = {
+            "api/users/**",
+            "api/cars/edit",
+            "api/cars/add",
+            "api/reservations/delete",
+            "api/reservations/accept",
+            "api/reservations/decline"
+    };
+    private static final String[] CUSTOMER_PERMIT = {
+            "api/cars",
+            "api/reservations/edit",
+            "api/reservations",
+            "api/cars",
+    };
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/login").permitAll()
-                .antMatchers("/api/**").permitAll()
+                .antMatchers(ADMIN_PERMIT).hasRole("ADMIN")
+                .antMatchers(CUSTOMER_PERMIT).hasRole("CUSTOMER")
                 .anyRequest().authenticated().and()
                 .exceptionHandling().authenticationEntryPoint(authEntryPointJwt).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
+
+
 }

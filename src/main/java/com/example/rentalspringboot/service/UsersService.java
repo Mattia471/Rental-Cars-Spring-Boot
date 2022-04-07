@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface UsersService
 {
+    Users getUsersById(int id);
+
     UsersResponse getById(int id);
 
     List<UsersResponse> getAllBy();

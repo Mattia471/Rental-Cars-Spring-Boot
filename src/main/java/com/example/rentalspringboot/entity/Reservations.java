@@ -1,5 +1,7 @@
 package com.example.rentalspringboot.entity;
 
+import com.example.rentalspringboot.dto.CarsResponse;
+import com.example.rentalspringboot.dto.UsersResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -48,5 +50,6 @@ public class Reservations implements Serializable {
 
     @Column
     private String status;
+
 
 }
