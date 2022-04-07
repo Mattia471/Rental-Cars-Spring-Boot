@@ -1,13 +1,12 @@
 package com.example.rentalspringboot.controllers;
 
-import com.example.rentalspringboot.dto.CarsReserved;
-import com.example.rentalspringboot.dto.CarsResponse;
-import com.example.rentalspringboot.dto.ReservationUserResponse;
-import com.example.rentalspringboot.dto.ReservationsResponse;
+import com.example.rentalspringboot.dto.*;
 import com.example.rentalspringboot.entity.Cars;
 import com.example.rentalspringboot.entity.Reservations;
+import com.example.rentalspringboot.entity.Users;
 import com.example.rentalspringboot.service.CarsService;
 import com.example.rentalspringboot.service.ReservationsService;
+import com.example.rentalspringboot.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +24,14 @@ import java.util.List;
 public class ReservationsController {
 
     @Autowired
-    private ReservationsService reservationsService;
+     ReservationsService reservationsService;
 
     @Autowired
-    private CarsService carsService;
+     CarsService carsService;
+
+    @Autowired
+     UsersService usersService;
+
 
     @GetMapping(value = "", produces = "application/json")
     public ResponseEntity<List<ReservationsResponse>> listAll() {
@@ -71,8 +74,53 @@ public class ReservationsController {
 
     //TODO NON FUNZIONANTE SISTEMARE/CREARE DTO IN RICHIESTA
     @PostMapping(value = "add")
-    public ResponseEntity<?> addReservation(@RequestBody Reservations reservation) {
-        reservationsService.saveReservation(reservation);
+    public ResponseEntity<?> addReservation(@RequestBody ReservationsRequest reservation) {
+
+        Users user = usersService.getById(reservation.getUserId());
+        Cars car = carsService.getById(reservation.getCarId());
+        Reservations newRes = new Reservations();
+        if(user != null && car !=null) {
+            newRes.setStartDate(reservation.getStartDate());
+            newRes.setEndDate(reservation.getEndDate());
+            newRes.setStatus(reservation.getStatus());
+            newRes.setCar(car);
+            newRes.setUser(user);
+        }
+        reservationsService.saveReservation(newRes);
         return ResponseEntity.ok("prenotazione aggiunta");
+    }
+
+    @PutMapping(value = "accept")
+    public ResponseEntity<?> acceptReservation(@RequestBody ReservationsRequest reservation){
+        Users user = usersService.getById(reservation.getUserId());
+        Cars car = carsService.getById(reservation.getCarId());
+        Reservations newRes = new Reservations();
+        if(user != null && car !=null) {
+            newRes.setId(reservation.getId());
+            newRes.setStartDate(reservation.getStartDate());
+            newRes.setEndDate(reservation.getEndDate());
+            newRes.setStatus(reservation.getStatus());
+            newRes.setCar(car);
+            newRes.setUser(user);
+        }
+        reservationsService.saveReservation(newRes);
+        return ResponseEntity.ok("prenotazione accettata");
+    }
+
+    @PutMapping(value = "decline")
+    public ResponseEntity<?> declineReservations(@RequestBody ReservationsRequest reservation){
+        Users user = usersService.getById(reservation.getUserId());
+        Cars car = carsService.getById(reservation.getCarId());
+        Reservations newRes = new Reservations();
+        if(user != null && car !=null) {
+            newRes.setId(reservation.getId());
+            newRes.setStartDate(reservation.getStartDate());
+            newRes.setEndDate(reservation.getEndDate());
+            newRes.setStatus(reservation.getStatus());
+            newRes.setCar(car);
+            newRes.setUser(user);
+        }
+        reservationsService.saveReservation(newRes);
+        return ResponseEntity.ok("prenotazione rifiutata");
     }
 }

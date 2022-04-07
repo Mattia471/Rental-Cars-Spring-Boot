@@ -2,6 +2,7 @@ package com.example.rentalspringboot.service;
 
 import com.example.rentalspringboot.dto.CarsReserved;
 import com.example.rentalspringboot.dto.ReservationUserResponse;
+import com.example.rentalspringboot.dto.ReservationsRequest;
 import com.example.rentalspringboot.dto.ReservationsResponse;
 import com.example.rentalspringboot.entity.Reservations;
 import com.example.rentalspringboot.repository.ReservationsRepository;
