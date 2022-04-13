@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 @Data
 public class Users implements Serializable {
 
@@ -21,7 +21,7 @@ public class Users implements Serializable {
     @Column
     private String name;
 
-    @Column//inserire solo (name= "") se il nome è diverso dalla variabile
+    @Column
     private String surname;
 
     @Column
@@ -32,13 +32,11 @@ public class Users implements Serializable {
 
 
     @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column
     private Date birthdate;
 
-    //JOIN TRA TABELLA USERS E RESERVATIONS
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    /*@JsonManagedReference //serve al codificatore json punto di partenza*/
     private List<Reservations> reservations;
 
     @Column

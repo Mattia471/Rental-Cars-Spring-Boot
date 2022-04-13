@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-@Transactional//tutte le query sotto transazione
+@Transactional
 public class ReservationsServiceImpl implements ReservationsService {
 
     @Autowired

@@ -11,17 +11,7 @@ public interface CarsService
 
     CarsResponse getCarById(int id);
 
-    CarsResponse getBylicensePlate(String licensePlate);
-
     List<CarsResponse> getAllBy();
-
-    List<CarsResponse> getByManufacturer(String manufacturer);
-
-    List<CarsResponse> getByModel(String model);
-
-    List<CarsResponse> getByType(String type);
-
-    List<CarsResponse> getByYear(String year);
 
     List<CarsResponse> getCarsAvailable(List<Integer> carsReserved);
 

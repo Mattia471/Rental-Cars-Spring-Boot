@@ -57,7 +57,6 @@ public class ReservationsController {
     @GetMapping(value = "reserved", produces = "application/json")
     public ResponseEntity<List<CarsResponse>> listReserved(@RequestParam("endD") String endD, @RequestParam("startD") String startD) throws ParseException {
 
-        //TODO IMPLEMENTARE REQUESTBODY
         SimpleDateFormat pattern = new SimpleDateFormat("yyyy-MM-dd");
         Date startDate = pattern.parse(startD);
         Date endDate = pattern.parse(endD);
@@ -65,6 +64,7 @@ public class ReservationsController {
         List<Integer> carsReserved = reservationsService.getCarsReserved(endDate, startDate);
         List<CarsResponse> carsAvailable = carsService.getCarsAvailable(carsReserved);
         return new ResponseEntity<>(carsAvailable, HttpStatus.OK);
+
     }
 
     @DeleteMapping(value = "delete/{id}")
@@ -81,7 +81,7 @@ public class ReservationsController {
         Cars car = carsService.getById(reservation.getCarId());
         Reservations newRes = new Reservations();
         if (user != null && car != null) {
-            if(reservation.getStartDate().before(reservation.getEndDate()) && reservation.getEndDate().after(reservation.getStartDate())) {
+            if (reservation.getStartDate().before(reservation.getEndDate()) && reservation.getEndDate().after(reservation.getStartDate())) {
                 newRes.setStartDate(reservation.getStartDate());
                 newRes.setEndDate(reservation.getEndDate());
                 newRes.setStatus(reservation.getStatus());
@@ -100,7 +100,7 @@ public class ReservationsController {
         Cars car = carsService.getById(reservation.getCarId());
         Reservations newRes = new Reservations();
         if (user != null && car != null) {
-            if(reservation.getStartDate().before(reservation.getEndDate()) && reservation.getEndDate().after(reservation.getStartDate())) {
+            if (reservation.getStartDate().before(reservation.getEndDate()) && reservation.getEndDate().after(reservation.getStartDate())) {
                 newRes.setId(reservation.getId());
                 newRes.setStartDate(reservation.getStartDate());
                 newRes.setEndDate(reservation.getEndDate());

@@ -1,8 +1,5 @@
 package com.example.rentalspringboot.entity;
 
-import com.example.rentalspringboot.dto.CarsResponse;
-import com.example.rentalspringboot.dto.UsersResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -12,7 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name="reservations")
+@Table(name = "reservations")
 @Data
 public class Reservations implements Serializable {
     @Id
@@ -21,31 +18,23 @@ public class Reservations implements Serializable {
     private int id;
 
     @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column
     private Date startDate;
 
     @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column
     private Date endDate;
 
-    //join con tabella USERS
     @ManyToOne
     @EqualsAndHashCode.Exclude
-    @JoinColumn(name="user_id", nullable = false,referencedColumnName = "id" )
-/*
-    @JsonBackReference //punto di arrivo
-*/
+    @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id")
     private Users user;
 
-    //join con tabella CARS
     @ManyToOne
     @EqualsAndHashCode.Exclude
-    @JoinColumn(name="car_id", nullable = false ,referencedColumnName = "id" )
-/*
-    @JsonBackReference //punto di arrivo
-*/
+    @JoinColumn(name = "car_id", nullable = false, referencedColumnName = "id")
     private Cars car;
 
     @Column

@@ -4,26 +4,26 @@ import com.example.rentalspringboot.dto.UsersResponse;
 import com.example.rentalspringboot.entity.Users;
 import com.example.rentalspringboot.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
-@Transactional//tutte le query sotto transazione
+@Transactional
 public class UsersServiceImpl implements UsersService {
 
     @Autowired
     UsersRepository usersRepository;
 
-
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Override
     public Users getUsersById(int id) {
-        Users users = usersRepository.getUsersById(id);
-        return users;
+        return usersRepository.getUsersById(id);
     }
 
     @Override
@@ -58,73 +58,6 @@ public class UsersServiceImpl implements UsersService {
         return usersResponses;
     }
 
-    @Override
-    public List<UsersResponse> getByName(String nome) {
-        List<UsersResponse> usersResponses = new ArrayList<>();
-        List<Users> users = usersRepository.getByName(nome);
-        for (Users res : users) {
-            UsersResponse response = new UsersResponse();
-            response.setId(res.getId());
-            response.setSurname(res.getSurname());
-            response.setName(res.getName());
-            response.setEmail(res.getEmail());
-            response.setPassword(res.getPassword());
-            response.setBirthdate(res.getBirthdate());
-            response.setRole(res.getRole());
-            usersResponses.add(response);
-        }
-        return usersResponses;
-    }
-
-    @Override
-    public List<UsersResponse> getByRole(String admin) {
-        List<UsersResponse> usersResponses = new ArrayList<>();
-        List<Users> users = usersRepository.getByRole(admin);
-        for (Users res : users) {
-            UsersResponse response = new UsersResponse();
-            response.setId(res.getId());
-            response.setSurname(res.getSurname());
-            response.setName(res.getName());
-            response.setEmail(res.getEmail());
-            response.setPassword(res.getPassword());
-            response.setBirthdate(res.getBirthdate());
-            response.setRole(res.getRole());
-            usersResponses.add(response);
-        }
-        return usersResponses;
-    }
-
-    @Override
-    public List<UsersResponse> getByBirthdate(Date birthdate) {
-        List<UsersResponse> usersResponses = new ArrayList<>();
-        List<Users> users = usersRepository.getByBirthdate(birthdate);
-        for (Users res : users) {
-            UsersResponse response = new UsersResponse();
-            response.setId(res.getId());
-            response.setSurname(res.getSurname());
-            response.setName(res.getName());
-            response.setEmail(res.getEmail());
-            response.setPassword(res.getPassword());
-            response.setBirthdate(res.getBirthdate());
-            response.setRole(res.getRole());
-            usersResponses.add(response);
-        }
-        return usersResponses;
-    }
-
-    @Override
-    public UsersResponse getByEmail(String email) {
-        Users users = usersRepository.getByEmail(email);
-        UsersResponse response = new UsersResponse();
-        response.setId(users.getId());
-        response.setSurname(users.getSurname());
-        response.setName(users.getName());
-        response.setPassword(users.getPassword());
-        response.setEmail(users.getEmail());
-        response.setBirthdate(users.getBirthdate());
-        response.setRole(users.getRole());
-        return response;
-    }
 
     @Override
     public List<UsersResponse> getBySurname(String surname) {
@@ -146,7 +79,15 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public void saveUser(Users user) {
-        usersRepository.save(user);
+        Users userDb = usersRepository.getUsersById(user.getId());
+        //controllo  password
+        if (user.getPassword().equals("")) {
+            user.setPassword(userDb.getPassword());
+            usersRepository.save(user);
+        } else {
+            user.setPassword(passwordEncoder.encode(user.getPassword())); //password criptata
+            usersRepository.save(user);
+        }
     }
 
     @Override

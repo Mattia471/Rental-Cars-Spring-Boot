@@ -25,7 +25,6 @@ public class CarsController {
         return new ResponseEntity<>(car, HttpStatus.OK);
     }
 
-
     @GetMapping(value = "id/{id}", produces = "application/json")
     public ResponseEntity<Cars> carById(@PathVariable("id") int id) {
         Cars car = carsService.getById(id);
@@ -35,36 +34,6 @@ public class CarsController {
     @GetMapping(value = "car/{id}", produces = "application/json")
     public ResponseEntity<CarsResponse> getCarById(@PathVariable("id") int id) {
         CarsResponse car = carsService.getCarById(id);
-        return new ResponseEntity<>(car, HttpStatus.OK);
-    }
-
-    @GetMapping(value = "licensePlate/{licensePlate}", produces = "application/json")
-    public ResponseEntity<CarsResponse> carBylicensePlate(@PathVariable("licensePlate") String licensePlate) {
-        CarsResponse car = carsService.getBylicensePlate(licensePlate);
-        return new ResponseEntity<>(car, HttpStatus.OK);
-    }
-
-    @GetMapping(value = "manufacturer/{manufacturer}", produces = "application/json")
-    public ResponseEntity<List<CarsResponse>> listByManufacturer(@PathVariable("manufacturer") String manufacturer) {
-        List<CarsResponse> car = carsService.getByManufacturer(manufacturer);
-        return new ResponseEntity<>(car, HttpStatus.OK);
-    }
-
-    @GetMapping(value = "model/{model}", produces = "application/json")
-    public ResponseEntity<List<CarsResponse>> listByModel(@PathVariable("model") String model) {
-        List<CarsResponse> car = carsService.getByModel(model);
-        return new ResponseEntity<>(car, HttpStatus.OK);
-    }
-
-    @GetMapping(value = "type/{type}", produces = "application/json")
-    public ResponseEntity<List<CarsResponse>> listByType(@PathVariable("type") String type) {
-        List<CarsResponse> car = carsService.getByType(type);
-        return new ResponseEntity<>(car, HttpStatus.OK);
-    }
-
-    @GetMapping(value = "year/{year}", produces = "application/json")
-    public ResponseEntity<List<CarsResponse>> listByYear(@PathVariable("year") String year) {
-        List<CarsResponse> car = carsService.getByYear(year);
         return new ResponseEntity<>(car, HttpStatus.OK);
     }
 
